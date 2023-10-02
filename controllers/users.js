@@ -7,7 +7,7 @@ module.exports.getUsers = (req, res) => {
 };
 
 module.exports.getUserById = (req, res) => {
-  if (req.params.userId.lenght === 24) {
+  if (req.params.userId.length === 24) {
     User.findById(req.params.userId)
       .then((user) => {
         if (!user) {

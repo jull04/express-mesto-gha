@@ -10,18 +10,18 @@ app.use(bodyParser.urlencoded({ extended: true })); // для приёма ве�
 
 mongoose.connect(DB_URL);
 
+app.use((req, res, next) => {
+  req.user = {
+    _id: '65156729d52f3fffc79662d0',
+  };
+  next();
+});
+
 app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
 
 app.use('*', (req, res) => {
   res.status(404).send({ message: 'страница не найдена' });
 });
-
-// app.use((req, res, next) => {
-//   req.user = {
-//     _id: '6516c0b4c0b5302f3660cb04',
-//   };
-//   next();
-// });
 
 app.listen(PORT);
