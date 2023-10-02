@@ -30,7 +30,7 @@ module.exports.deleteCard = (req, res) => {
     Card.findById(req.params.cardId)
       .then((card) => {
         if (!card) {
-          res.status(400).send({ message: 'Карточка по данному _id не найдена' });
+          res.status(404).send({ message: 'Карточка по данному _id не найдена' });
           return;
         }
         res.status(200).send({ message: 'Карточка удалена' });
@@ -47,14 +47,14 @@ module.exports.likeCard = (req, res) => {
       .populate(['owner', 'likes'])
       .then((card) => {
         if (!card) {
-          res.status(400).send({ message: 'Карточка по данному _id не найдена' });
+          res.status(404).send({ message: 'Карточка по данному _id не найдена' });
           return;
         }
         res.status(200).send(card);
       })
       .catch(() => res.status(404).send({ message: 'Карточка по данному _id не найдена' }));
   } else {
-    res.status(404).send({ message: 'Некорректный _id карточки' });
+    res.status(400).send({ message: 'Некорректный _id карточки' });
   }
 };
 
@@ -64,13 +64,13 @@ module.exports.dislikeCard = (req, res) => {
       .populate(['owner', 'likes'])
       .then((card) => {
         if (!card) {
-          res.status(400).send({ message: 'Карточка по данному _id не найдена' });
+          res.status(404).send({ message: 'Карточка по данному _id не найдена' });
           return;
         }
         res.status(200).send(card);
       })
       .catch(() => res.status(404).send({ message: 'Карточка по данному _id не найдена' }));
   } else {
-    res.status(404).send({ message: 'Некорректный _id карточки' });
+    res.status(400).send({ message: 'Некорректный _id карточки' });
   }
 };
