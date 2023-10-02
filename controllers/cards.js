@@ -26,7 +26,7 @@ module.exports.getCards = (req, res) => {
 };
 
 module.exports.deleteCard = (req, res) => {
-  if (req.params.cardId.lenght === 24) {
+  if (req.params.cardId.length === 24) {
     Card.findById(req.params.cardId)
       .then((card) => {
         if (!card) {
@@ -37,12 +37,12 @@ module.exports.deleteCard = (req, res) => {
       })
       .catch(() => res.status(404).send({ message: 'Карточка по данному _id не найдена' }));
   } else {
-    res.status(404).send({ message: 'Некорректный _id карточки' });
+    res.status(400).send({ message: 'Некорректный _id карточки' });
   }
 };
 
 module.exports.likeCard = (req, res) => {
-  if (req.params.cardId.lenght === 24) {
+  if (req.params.cardId.length === 24) {
     Card.findByIdAndUpdate(req.params.cardId, { $addToSet: { likes: req.user._id } }, { new: true })
       .populate(['owner', 'likes'])
       .then((card) => {
@@ -59,7 +59,7 @@ module.exports.likeCard = (req, res) => {
 };
 
 module.exports.dislikeCard = (req, res) => {
-  if (req.params.cardId.lenght === 24) {
+  if (req.params.cardId.length === 24) {
     Card.findByIdAndUpdate(req.params.cardId, { $pull: { likes: req.user._id } }, { new: true })
       .populate(['owner', 'likes'])
       .then((card) => {
