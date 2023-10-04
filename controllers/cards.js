@@ -1,4 +1,4 @@
-const httpConstants = require('node:http2');
+const httpConstants = require('http2').constants;
 const mongoose = require('mongoose');
 const Card = require('../models/card');
 
