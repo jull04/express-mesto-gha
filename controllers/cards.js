@@ -60,7 +60,7 @@ module.exports.deleteCard = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'TypeError') {
-        next(new NotFoundError(`Карточка с _id: ${req.params.cardId} не найдена.`));
+        next(new NotFoundError('Карточка с данным _id не найдена'));
       } else {
         next(err);
       }
