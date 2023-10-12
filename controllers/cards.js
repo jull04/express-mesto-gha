@@ -50,9 +50,9 @@ module.exports.deleteCard = (req, res, next) => {
       }
     })
     .catch((err) => {
-      if (err instanceof Error.CastError) {
+      if (err instanceof mongoose.Error.CastError) {
         next(new BadRequestError(err.message));
-      } else if (err instanceof Error.DocumentNotFoundError) {
+      } else if (err instanceof mongoose.Error.DocumentNotFoundError) {
         next(new NotFoundError('Карточка с данным _id не найдена'));
       } else {
         next(err);
