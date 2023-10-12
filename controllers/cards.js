@@ -39,27 +39,20 @@ module.exports.getCards = (req, res, next) => {
 
 module.exports.deleteCard = (req, res, next) => {
   Card.findById(req.params.cardId)
+    .orFail()
     .then((card) => {
-      if (!card.owner.equals(req.user._id)) {
-        throw new ForbiddenError('Карточка другого пользовател');
+      if (card.owner.toString() === req.user._id) {
+        Card.deleteOne(card)
+          .then(() => res.status(HTTP_STATUS_OK).send({ message: 'Карточка успешно удалена' }))
+          .catch(next);
+      } else {
+        throw new ForbiddenError('Чужую карточку удалить нельзя');
       }
-      Card.deleteOne(card)
-        .orFail()
-        .then(() => {
-          res.status(HTTP_STATUS_OK).send({ message: 'Карточка удалена' });
-        })
-        .catch((err) => {
-          if (err instanceof mongoose.Error.DocumentNotFoundError) {
-            next(new NotFoundError('Карточка с данным _id  не найдена'));
-          } else if (err instanceof mongoose.Error.CastError) {
-            next(new BadRequestError('Некорректный _id карточки'));
-          } else {
-            next(err);
-          }
-        });
     })
     .catch((err) => {
-      if (err.name === 'TypeError') {
+      if (err instanceof Error.CastError) {
+        next(new BadRequestError(err.message));
+      } else if (err instanceof Error.DocumentNotFoundError) {
         next(new NotFoundError('Карточка с данным _id не найдена'));
       } else {
         next(err);
